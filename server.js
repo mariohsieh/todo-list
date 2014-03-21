@@ -14,9 +14,9 @@ app.configure(function() {
 });
 
 // define model   ***********************************
-var Todolist = mongoose.model('Todolist' {
+var Todolist = mongoose.model('Todolist', {
 	text : String
-}
+});
 
 // define RESTful api   ***********************************
 // get all todo list items
@@ -62,8 +62,7 @@ app.delete('/api/todos/:id', function(req,res) {
 // define routes  ***********************************
 app.get('*', function(req,res) {
 	res.render('./public/index.html');	// load a single view file 
-}
-
+});
 
 // open port and start app  ***********************************
 app.listen(9000);
