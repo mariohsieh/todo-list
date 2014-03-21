@@ -1,0 +1,15 @@
+{
+	"name": "todo-list",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"version": "0.0.1",
+	"description": "todo list from scotch.io",
+	"author": "mario hsieh",
+	"license": "ISC",
+	"dependencies": {
+		"express": "latest",
+		"mongoose": "latest"
+	}
+}
