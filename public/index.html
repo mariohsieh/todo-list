@@ -15,7 +15,10 @@
 	<script src="libs/angular/angular.min.js"></script>
 	
 	<!-- angular -->
-	<script src="core.js"></script>
+	<script src="/js/core.js"></script>
+	<script src="/js/controllers/main.js"></script>
+	<script src="/js/services/todos.js"></script>
+	
 </head>
 <body ng-controller="mainController">
 	<div class="container">
@@ -40,14 +43,17 @@
 		<!-- form to create todos -->
 		<div id="todo-form" class="row">
 			<div class="col-sm-8 col-sm-offset-2 text-center">
-				<form>
+				<form name="myForm">
 					<div class="form-group">
 						<!-- bind this value to formData in angular -->
-						<input type="text" class="form-control input-lg text-center" placeholder="Write your todo item here" ng-model="formData.text">
+						<input type="text" class="form-control input-lg text-center" placeholder="Please write something!" ng-model="formData.text" ng-minlength="3" />
+						<!--<span ng-hide="formData.text.length">Enter some words</span>
+						<span ng-show="formData.text.length">Yes, there is something entered</span>-->
 					</div>
-					
+					<!-- hidden input to prevent enter key submission -->
+					<input type="hidden" />
 					<!-- createToDo() creates new todo list items -->
-					<button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()" ng-disabled="myForm.$invalid">Add</button>
 				</form>
 			</div>
 		</div>
