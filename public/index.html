@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" ng-app="todolist">
+<head>
+	<!-- meta -->
+	<meta charset="utf-8" />
+	<!-- optimize mobile viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>Todo List Example by scotch.io</title>
+
+	<!-- css -->
+	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css" />
+		
+	<!-- js -->
+	<script src="libs/angular/angular.min.js"></script>
+	
+	<!-- angular -->
+	<script src="core.js"></script>
+</head>
+<body ng-controller="mainController">
+	<div class="container">
+		<!-- header and todo list item count -->
+		<div class="jumbotron text-center">
+			<h1>Todo List <span class="label label-info">{{ todos.length }}</span></h1>
+		</div>
+		
+		<!-- todo list -->
+		<div id="todo-list" class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				<!-- loop over the todo list items in $scope.todos -->
+				<div class="checkbox" ng-repeat="todo in todos track by $index">
+					<label>
+						<input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
+					</label>
+				</div>
+				
+			</div>
+		</div>
+
+		<!-- form to create todos -->
+		<div id="todo-form" class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center">
+				<form>
+					<div class="form-group">
+						<!-- bind this value to formData in angular -->
+						<input type="text" class="form-control input-lg text-center" placeholder="Write your todo item here" ng-model="formData.text">
+					</div>
+					
+					<!-- createToDo() creates new todo list items -->
+					<button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

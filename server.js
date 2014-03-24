@@ -4,7 +4,7 @@ var express = require('express'),
 	mongoose = require('mongoose');
 	
 // configuration  ***********************************
-mongoose.connect('mongodb://localhost/todolist');	// if database doesn't exist, one will be created
+mongoose.connect('mongodb://localhost/scotch');	// if database doesn't exist, one will be created
 
 app.configure(function() {
 	app.use(express.static(__dirname + '/public'));	// set the static files location
@@ -14,31 +14,35 @@ app.configure(function() {
 });
 
 // define model   ***********************************
-var Todolist = mongoose.model('Todolist', {
-	text : String
+var Todolist = mongoose.model('Todo', {
+		text : String
 });
 
 // define RESTful api   ***********************************
 // get all todo list items
 app.get('api/todos', function(req,res) {
+	
 	// use mongoose to grab all items from database
 	Todo.find(function(err,doc) {
 		
-		if (err) throw err;	// show error if it occurs
+		if (err) //throw err;	// show error if it occurs
+			res.send(err);
 		res.json(doc);		// returns the items in JSON format
+		console.log(doc);
 	});
 });
 
 // create todo list and send back all todo list items after creation
 app.post('/api/todos', function(req,res) {
+	
 	// create a todo list, information comes from AJAX request from Angular
-	Todo.create({
+	Todolist.create({
 		text: req.body.text,
 		done: false
 	}, function(err,doc) {
 		if (err) throw err;
 		// get and return all the todo list items after you create another
-		Todo.find(function(err,doc) {
+		Todolist.find(function(err,doc) {
 			if (err) throw err;
 			res.json(doc);
 		});
@@ -47,12 +51,14 @@ app.post('/api/todos', function(req,res) {
 
 // delete a todo list item
 app.delete('/api/todos/:id', function(req,res) {
-	Todo.remove({
+	
+	// remove an item from list
+	Todolist.remove({
 		_id: req.params.id
 	}, function(err,doc) {
 		if (err) throw err;
 		// get and return al the todo list items after you create another
-		Todo.find(function(err,doc) {
+		Todolist.find(function(err,doc) {
 			if (err) throw err;
 			res.json(doc);
 		});
@@ -61,7 +67,8 @@ app.delete('/api/todos/:id', function(req,res) {
 
 // define routes  ***********************************
 app.get('*', function(req,res) {
-	res.render('./public/index.html');	// load a single view file 
+	//res.render('./public/index.html');	// load a single view file 
+	res.sendfile('./public/index.html'); 
 });
 
 // open port and start app  ***********************************
