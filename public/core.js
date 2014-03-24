@@ -7,12 +7,12 @@ function mainController($scope, $http) {
 	$http.get('/api/todos')
 		.success(function(data) {
 			$scope.todos = data;
-			console.log($scope.todos);
+			console.log(data.length);
 		})
 		.error(function(data) {
 			console.log(data);
 		});
-		
+	
 	// submit the add form, console log the text
 	$scope.createTodo = function() {
 		$http.post('/api/todos', $scope.formData)
@@ -39,5 +39,5 @@ function mainController($scope, $http) {
 				console.log(data);
 			});
 	};
-
+	
 }

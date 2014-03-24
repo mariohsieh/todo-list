@@ -20,15 +20,15 @@ var Todolist = mongoose.model('Todo', {
 
 // define RESTful api   ***********************************
 // get all todo list items
-app.get('api/todos', function(req,res) {
+app.get('/api/todos', function(req,res) {
 	
 	// use mongoose to grab all items from database
-	Todo.find(function(err,doc) {
+	Todolist.find(function(err,doc) {
 		
-		if (err) //throw err;	// show error if it occurs
-			res.send(err);
+		if (err) throw err;	// show error if it occurs
+			//res.send(err);
 		res.json(doc);		// returns the items in JSON format
-		console.log(doc);
+		//console.log(doc);
 	});
 });
 
