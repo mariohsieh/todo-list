@@ -1,10 +1,14 @@
+// server.js
+
 // declare modules ***********************************
-var express = require('express'),
-	app = express(),
-	mongoose = require('mongoose');
+var express = require('express'),					// load express
+	app = express(),								// create app using express framework
+	mongoose = require('mongoose'),					// load mongoose
+	port = process.env.PPORT || 9000,				// define port
+	database = require('./config/database');		// use database.js from config folder	
 	
 // configuration  ***********************************
-mongoose.connect('mongodb://localhost/scotch');	// if database doesn't exist, one will be created
+mongoose.connect(database.url);						// connect to url specfied in database.js
 
 app.configure(function() {
 	app.use(express.static(__dirname + '/public'));	// set the static files location
@@ -13,64 +17,9 @@ app.configure(function() {
 	app.use(express.methodOverride());				// simulate DELETE and PUT
 });
 
-// define model   ***********************************
-var Todolist = mongoose.model('Todo', {
-		text : String
-});
-
-// define RESTful api   ***********************************
-// get all todo list items
-app.get('/api/todos', function(req,res) {
-	
-	// use mongoose to grab all items from database
-	Todolist.find(function(err,doc) {
-		
-		if (err) throw err;	// show error if it occurs
-			//res.send(err);
-		res.json(doc);		// returns the items in JSON format
-		//console.log(doc);
-	});
-});
-
-// create todo list and send back all todo list items after creation
-app.post('/api/todos', function(req,res) {
-	
-	// create a todo list, information comes from AJAX request from Angular
-	Todolist.create({
-		text: req.body.text,
-		done: false
-	}, function(err,doc) {
-		if (err) throw err;
-		// get and return all the todo list items after you create another
-		Todolist.find(function(err,doc) {
-			if (err) throw err;
-			res.json(doc);
-		});
-	});
-});
-
-// delete a todo list item
-app.delete('/api/todos/:id', function(req,res) {
-	
-	// remove an item from list
-	Todolist.remove({
-		_id: req.params.id
-	}, function(err,doc) {
-		if (err) throw err;
-		// get and return al the todo list items after you create another
-		Todolist.find(function(err,doc) {
-			if (err) throw err;
-			res.json(doc);
-		});
-	});
-});
-
-// define routes  ***********************************
-app.get('*', function(req,res) {
-	//res.render('./public/index.html');	// load a single view file 
-	res.sendfile('./public/index.html'); 
-});
+// load routes from app/routes.js (models are loaded here)
+require('./app/routes')(app);
 
 // open port and start app  ***********************************
-app.listen(9000);
+app.listen(port);
 console.log("App running on localhost:9000");
